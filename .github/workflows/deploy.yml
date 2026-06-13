@@ -59,6 +59,10 @@ jobs:
           --export-release "Web" \
           build/web/index.html
 
+      - name: Show export log
+        if: always()
+        run: cat export.log
+
       - name: Export Linux
         run: |
           ./Godot_v${GODOT_DOWNLOAD_VERSION}_linux.x86_64 \
