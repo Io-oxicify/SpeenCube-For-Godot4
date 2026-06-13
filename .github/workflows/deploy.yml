@@ -1,0 +1,71 @@
+name: Build and Deploy to itch.io
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      GODOT_VERSION: "4.6.2-stable"
+      ITCH_USER: "OxicJar"
+      ITCH_GAME: "speencube-godot-4-branch"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Godot
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip
+          unzip Godot_v${GODOT_VERSION}_linux.x86_64.zip
+          chmod +x Godot_v${GODOT_VERSION}_linux.x86_64
+
+      - name: Download Export Templates
+        run: |
+          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}
+          unzip Godot_v${GODOT_VERSION}_export_templates.tpz -d templates
+          cp -r templates/templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}/
+
+      - name: Create output folders
+        run: |
+          mkdir -p build/web
+          mkdir -p build/linux
+
+      - name: Export Web
+        run: |
+          ./Godot_v${GODOT_VERSION}_linux.x86_64 \
+            --headless \
+            --export-release "Web" \
+            build/web/index.html
+
+      - name: Export Linux
+        run: |
+          ./Godot_v${GODOT_VERSION}_linux.x86_64 \
+            --headless \
+            --export-release "Linux" \
+            build/linux/game.x86_64
+
+      - name: Download Butler
+        run: |
+          curl -L https://broth.itch.zone/butler/linux-amd64/LATEST/archive/default -o butler.zip
+          unzip butler.zip
+          chmod +x butler
+
+      - name: Upload Web
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: |
+          ./butler push build/web \
+            $ITCH_USER/$ITCH_GAME:web
+
+      - name: Upload Linux
+        env:
+          BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
+        run: |
+          ./butler push build/linux \
+            $ITCH_USER/$ITCH_GAME:linux
