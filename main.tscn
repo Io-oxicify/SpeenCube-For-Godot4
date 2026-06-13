@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://c6yhm6xyovoh0"]
+
+[ext_resource type="Script" uid="uid://duq6527pne7mm" path="res://Spin.gd" id="1_1bvp3"]
+[ext_resource type="Texture2D" uid="uid://ccyy25lqmfq4r" path="res://icon.svg" id="2_lquwl"]
+[ext_resource type="Script" uid="uid://b02kr5v7qtc32" path="res://exit.gd" id="3_7mycd"]
+[ext_resource type="Script" uid="uid://ben3qou528lvg" path="res://pause.gd" id="4_272bh"]
+
+[sub_resource type="Environment" id="Environment_5vw27"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_kek77"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4c57u"]
+albedo_texture = ExtResource("2_lquwl")
+
+[sub_resource type="BoxMesh" id="BoxMesh_efxa6"]
+
+[node name="Node" type="Node" unique_id=1994555518]
+
+[node name="3dWorldRoot" type="Node3D" parent="." unique_id=811816290]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="3dWorldRoot" unique_id=1254212310]
+environment = SubResource("Environment_5vw27")
+
+[node name="Camera3D" type="Camera3D" parent="3dWorldRoot" unique_id=344752342]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="3dWorldRoot" unique_id=1953618321]
+
+[node name="Cube1" type="Node3D" parent="3dWorldRoot" unique_id=257624168]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95836353, 0, -1.8991613)
+script = ExtResource("1_1bvp3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="3dWorldRoot/Cube1" unique_id=1921464984]
+mesh = SubResource("BoxMesh_kek77")
+surface_material_override/0 = SubResource("StandardMaterial3D_4c57u")
+
+[node name="Cube2" type="Node3D" parent="3dWorldRoot" unique_id=1638377222]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9768722, 0, -1.8273032)
+script = ExtResource("1_1bvp3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="3dWorldRoot/Cube2" unique_id=2067181668]
+mesh = SubResource("BoxMesh_efxa6")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=278010712]
+
+[node name="Exit" type="Button" parent="UI" unique_id=1786252491]
+process_mode = 3
+offset_right = 264.0
+offset_bottom = 118.0
+theme_override_font_sizes/font_size = 80
+text = "Exit"
+script = ExtResource("3_7mycd")
+
+[node name="Pause" type="Button" parent="UI" unique_id=330408717]
+process_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -287.0
+offset_bottom = 105.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 54
+text = "Pause"
+script = ExtResource("4_272bh")
