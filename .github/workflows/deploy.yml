@@ -83,11 +83,11 @@ jobs:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         run: |
           ./butler push build/web \
-            $ITCH_USER/$ITCH_GAME:web
+            $ITCH_USER/$ITCH_GAME:html5
 
       - name: Upload Linux
         env:
           BUTLER_API_KEY: ${{ secrets.BUTLER_API_KEY }}
         run: |
           ./butler push build/linux \
-            $ITCH_USER/$ITCH_GAME:linux
+            $ITCH_USER/$ITCH_GAME:other
