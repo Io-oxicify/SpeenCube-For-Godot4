@@ -47,6 +47,10 @@ jobs:
           mkdir -p build/web
           mkdir -p build/linux
 
+      - name: Show project files
+        run: |
+          find .
+
       - name: Export Web
         run: |
           ./Godot_v${GODOT_DOWNLOAD_VERSION}_linux.x86_64 \
