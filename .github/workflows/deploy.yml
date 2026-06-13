@@ -1,16 +1,18 @@
-name: Build and Deploy to itch.io
+name: Build and Deploy
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     env:
-      GODOT_VERSION: "4.6.2.stable"
+      GODOT_DOWNLOAD_VERSION: "4.6.2-stable"
+      GODOT_TEMPLATE_VERSION: "4.6.2.stable"
+
       ITCH_USER: "OxicJar"
       ITCH_GAME: "speencube-godot-4-branch"
 
@@ -20,32 +22,41 @@ jobs:
 
       - name: Download Godot
         run: |
-          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_linux.x86_64.zip
-          unzip Godot_v${GODOT_VERSION}_linux.x86_64.zip
-          chmod +x Godot_v${GODOT_VERSION}_linux.x86_64
+          wget https://github.com/godotengine/godot/releases/download/${GODOT_DOWNLOAD_VERSION}/Godot_v${GODOT_DOWNLOAD_VERSION}_linux.x86_64.zip
+          unzip Godot_v${GODOT_DOWNLOAD_VERSION}_linux.x86_64.zip
+          chmod +x Godot_v${GODOT_DOWNLOAD_VERSION}_linux.x86_64
 
       - name: Download Export Templates
         run: |
-          wget https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}/Godot_v${GODOT_VERSION}_export_templates.tpz
-          mkdir -p ~/.local/share/godot/export_templates/${GODOT_VERSION}
-          unzip Godot_v${GODOT_VERSION}_export_templates.tpz -d templates
-          cp -r templates/templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}/
+          wget https://github.com/godotengine/godot/releases/download/${GODOT_DOWNLOAD_VERSION}/Godot_v${GODOT_DOWNLOAD_VERSION}_export_templates.tpz
 
-      - name: Create output folders
+          mkdir -p ~/.local/share/godot/export_templates/${GODOT_TEMPLATE_VERSION}
+
+          unzip Godot_v${GODOT_DOWNLOAD_VERSION}_export_templates.tpz -d templates
+
+          cp -r templates/templates/* \
+            ~/.local/share/godot/export_templates/${GODOT_TEMPLATE_VERSION}/
+
+      - name: Verify Templates
+        run: |
+          echo "Installed templates:"
+          find ~/.local/share/godot/export_templates
+
+      - name: Create Build Directories
         run: |
           mkdir -p build/web
           mkdir -p build/linux
 
       - name: Export Web
         run: |
-          ./Godot_v${GODOT_VERSION}_linux.x86_64 \
+          ./Godot_v${GODOT_DOWNLOAD_VERSION}_linux.x86_64 \
             --headless \
             --export-release "Web" \
             build/web/index.html
 
       - name: Export Linux
         run: |
-          ./Godot_v${GODOT_VERSION}_linux.x86_64 \
+          ./Godot_v${GODOT_DOWNLOAD_VERSION}_linux.x86_64 \
             --headless \
             --export-release "Linux" \
             build/linux/game.x86_64
