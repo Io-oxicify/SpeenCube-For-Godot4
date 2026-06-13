@@ -4,4 +4,4 @@ sooo pretty much like the original SpeenCube, but made from scratch via **Godot 
 ### Editable Install
 download source, import to godot, and done!  
 ### i just want the executable.
-at oxicjar.itch.io/speencube-godot-4-branch  
+at The Releases Tab. (we currently have PCK so you have to get the godot binary)  
