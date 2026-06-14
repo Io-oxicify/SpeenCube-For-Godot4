@@ -7,12 +7,12 @@
 
 [sub_resource type="Environment" id="Environment_5vw27"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_efxa6"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_kek77"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4c57u"]
 albedo_texture = ExtResource("2_lquwl")
-
-[sub_resource type="BoxMesh" id="BoxMesh_efxa6"]
 
 [node name="Node" type="Node" unique_id=1994555518]
 
@@ -25,20 +25,22 @@ environment = SubResource("Environment_5vw27")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="3dWorldRoot" unique_id=1953618321]
 
-[node name="Cube1" type="Node3D" parent="3dWorldRoot" unique_id=257624168]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95836353, 0, -1.8991613)
-script = ExtResource("1_1bvp3")
+[node name="cubes" type="Node" parent="3dWorldRoot" unique_id=591371491]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="3dWorldRoot/Cube1" unique_id=1921464984]
-mesh = SubResource("BoxMesh_kek77")
-surface_material_override/0 = SubResource("StandardMaterial3D_4c57u")
-
-[node name="Cube2" type="Node3D" parent="3dWorldRoot" unique_id=1638377222]
+[node name="Cube2" type="Node3D" parent="3dWorldRoot/cubes" unique_id=1638377222]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9768722, 0, -1.8273032)
 script = ExtResource("1_1bvp3")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="3dWorldRoot/Cube2" unique_id=2067181668]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="3dWorldRoot/cubes/Cube2" unique_id=2067181668]
 mesh = SubResource("BoxMesh_efxa6")
+
+[node name="Cube1" type="Node3D" parent="3dWorldRoot/cubes" unique_id=257624168]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.95836353, 0, -1.8991613)
+script = ExtResource("1_1bvp3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="3dWorldRoot/cubes/Cube1" unique_id=1921464984]
+mesh = SubResource("BoxMesh_kek77")
+surface_material_override/0 = SubResource("StandardMaterial3D_4c57u")
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=278010712]
 

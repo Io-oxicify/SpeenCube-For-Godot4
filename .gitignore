@@ -4,3 +4,4 @@ exports/
 build/
 .DS_Store
 Thumbs.db
+.nomedia
